@@ -121,11 +121,13 @@ const allFamousWorks = computed(() =>
 
 // Activity 4: Find author by name
 const orwell = computed(() => {
+  return authors.find(author => author.name === 'George Orwell');
   // TODO: CODE TO FIND AUTHOR BY NAME HERE
 })
 
 // Activity 5: Find author by ID
 const austen = computed(() => {
+  return authors.find(author => author.id === 1);
   // TODO: CODE TO FIND AUTHOR BY ID HERE
 })
 </script>
