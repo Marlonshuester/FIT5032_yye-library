@@ -10,18 +10,26 @@
       <h3>Iterating through Arrays</h3>
       <!-- Activity 6: Render a list containing author names and their birth years. Hint: Make use of the v-for directive to iterate through the array of authors. -->
       <!-- TODO: CODE TO RENDER LIST OF AUTHORS HERE -->
-       <ul>
-        <li v-for="author in authors" :key="author.id":class="{highlight:author.name ==='George Orwell'}">
+      <ul>
+        <li
+          v-for="author in authors"
+          :key="author.id"
+          :class="{ highlight: author.name === 'George Orwell' }"
+        >
           {{ author.name }} ({{ author.birthYear }})
         </li>
       </ul>
-      
+
       <h3>Filtering Arrays</h3>
       <!-- Activity 7: Render a list containing authors born after 1850. Hint: Make use of the v-for directive to iterate through the array of authors that you have filtered out. -->
       <p>Authors born after 1850:</p>
       <!-- TODO: CODE TO RENDER LIST OF AUTHORS HERE -->
-       <ul>
-        <li v-for="author in modernAuthors" :key="author.id":class="{highlight:author.name ==='George Orwell'}">
+      <ul>
+        <li
+          v-for="author in modernAuthors"
+          :key="author.id"
+          :class="{ highlight: author.name === 'George Orwell' }"
+        >
           {{ author.name }} ({{ author.birthYear }})
         </li>
       </ul>
@@ -31,7 +39,7 @@
       <ul>
         <!-- Activity 8: Render a list of all famous works. Hint: Use the v-for directive to iterate through the array of authors that you have filtered out. -->
         <!-- TODO: CODE TO RENDER LIST OF FAMOUS WORKS HERE -->
-         <li v-for="work in allFamousWorks" :key="work">
+        <li v-for="work in allFamousWorks" :key="work">
           {{ work }}
         </li>
       </ul>
@@ -94,20 +102,19 @@
     <section class="lab-section">
       <h2>Attribute, Class and Style Binding with <code>v-bind</code></h2>
       <p>Highlighting Specific Authors:</p>
-
     </section>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue"
+import { ref, computed } from "vue";
 
 // Activity 1: Import JSON files (authors.json and bookstores.json)
 // TODO: CODE TO IMPORT JSON FILES HERE
-import authors from "../assets/json/authors.json"
-import bookstores from "../assets/json/bookstores.json"
+import authors from "../assets/json/authors.json";
+import bookstores from "../assets/json/bookstores.json";
 
-const showMessage = ref(false)
+const showMessage = ref(false);
 
 // Activity 2: Get authors born after 1850
 const modernAuthors = computed(() =>
@@ -121,15 +128,15 @@ const allFamousWorks = computed(() =>
 
 // Activity 4: Find author by name
 const orwell = computed(() => {
-  return authors.find(author => author.name === 'George Orwell');
+  return authors.find((author) => author.name === "George Orwell");
   // TODO: CODE TO FIND AUTHOR BY NAME HERE
-})
+});
 
 // Activity 5: Find author by ID
 const austen = computed(() => {
-  return authors.find(author => author.id === 1);
+  return authors.find((author) => author.id === 1);
   // TODO: CODE TO FIND AUTHOR BY ID HERE
-})
+});
 </script>
 
 <style scoped>
