@@ -201,29 +201,58 @@ const validatePassword = (blur) => {
   <div class="mt-5" v-if="submittedCards.length">
     <DataTable
       :value="submittedCards"
+      :dataKey="'_id'"
+      paginator
+      :rows="5"
+      :rowsPerPageOptions="[5, 10, 20]"
+      sortMode="multiple"
+      showGridlines
+      class="p-datatable-sm shadow-sm rounded-3"
+      tableStyle="min-width: 760px"
       responsiveLayout="scroll"
-      class="p-datatable-sm"
     >
-      <Column field="username" header="Username" />
+      <template #header>
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Submitted Users ({{ submittedCards.length }})</h5>
+        </div>
+      </template>
 
-      <!-- 密码：如需明文就保留 field；如需掩码可用 #body 槽（见下列注释） -->
-      <Column field="password" header="Password" />
-      <!-- 若想掩码显示，改成：
-      <Column header="Password">
+      <Column
+        field="username"
+        header="Username"
+        sortable
+        style="min-width: 140px"
+      />
+
+      <Column header="Password" style="min-width: 120px">
         <template #body="{ data }">
-          {{ '•'.repeat(String(data.password || '').length) }}
+          {{ "•".repeat((data.password || "").length) }}
         </template>
       </Column>
-      -->
 
-      <Column header="Australian Resident">
+      <Column
+        field="isAustralian"
+        header="Resident"
+        sortable
+        style="min-width: 120px"
+      >
         <template #body="{ data }">
           {{ data.isAustralian ? "Yes" : "No" }}
         </template>
       </Column>
 
-      <Column field="gender" header="Gender" />
-      <Column field="reason" header="Reason" />
+      <Column
+        field="gender"
+        header="Gender"
+        sortable
+        style="min-width: 100px"
+      />
+
+      <Column field="reason" header="Reason" style="min-width: 220px">
+        <template #body="{ data }">
+          <span style="white-space: pre-wrap">{{ data.reason }}</span>
+        </template>
+      </Column>
     </DataTable>
   </div>
 </template>
