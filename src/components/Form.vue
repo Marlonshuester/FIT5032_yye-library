@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from "vue";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
 
 const formData = ref({
   username: "",
@@ -12,9 +14,70 @@ const formData = ref({
 const submittedCards = ref([]);
 
 const submitForm = () => {
-  submittedCards.value.push({
-    ...formData.value,
-  });
+  validateName(true);
+  validatePassword(true);
+  if (!errors.value.username && !errors.value.password) {
+    submittedCards.value.push({ ...formData.value });
+    // console.log("submittedCards length: ", submittedCards.value.length);
+    clearForm();
+  }
+};
+
+const clearForm = () => {
+  formData.value = {
+    username: "",
+    password: "",
+    isAustralian: false,
+    reason: "",
+    gender: "",
+  };
+};
+
+const errors = ref({
+  username: null,
+  password: null,
+  isAustralian: null,
+  reason: null,
+  gender: null,
+});
+
+const validateName = (blur) => {
+  if (formData.value.username.length < 3) {
+    if (blur) errors.value.username = "Name must be at least 3 characters";
+  } else {
+    errors.value.username = null;
+  }
+};
+
+const validatePassword = (blur) => {
+  const password = formData.value.password;
+  const minLength = 8;
+  const hasUppercase = /[A-Z]/.test(password);
+  const hasLowercase = /[a-z]/.test(password);
+  const hasNumber = /\d/.test(password);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>"]/.test(password);
+
+  if (password.length < minLength) {
+    if (blur)
+      errors.value.password = `Password must be at least ${minLength} characters long.`;
+  } else if (!hasUppercase) {
+    if (blur)
+      errors.value.password =
+        "Password must contain at least one uppercase letter.";
+  } else if (!hasLowercase) {
+    if (blur)
+      errors.value.password =
+        "Password must contain at least one lowercase letter.";
+  } else if (!hasNumber) {
+    if (blur)
+      errors.value.password = "Password must contain at least one number.";
+  } else if (!hasSpecialChar) {
+    if (blur)
+      errors.value.password =
+        "Password must contain at least one speical character.";
+  } else {
+    errors.value.password = null;
+  }
 };
 </script>
 
@@ -48,8 +111,13 @@ const submitForm = () => {
                 type="text"
                 class="form-control"
                 id="username"
+                @blur="() => validateName(true)"
+                @input="() => validateName(false)"
                 v-model="formData.username"
               />
+              <div v-if="errors.username" class="text-danger">
+                {{ errors.username }}
+              </div>
             </div>
             <div class="col-md-6">
               <label for="password" class="form-label">Password</label>
@@ -57,8 +125,13 @@ const submitForm = () => {
                 type="password"
                 class="form-control"
                 id="password"
+                @blur="() => validatePassword(true)"
+                @input="() => validatePassword(false)"
                 v-model="formData.password"
               />
+              <div v-if="errors.password" class="text-danger">
+                {{ errors.password }}
+              </div>
             </div>
           </div>
           <div class="row mb-3">
@@ -103,7 +176,7 @@ const submitForm = () => {
       </div>
     </div>
   </div>
-  <div class="row mt-5" v-if="submittedCards.length">
+  <!-- <div class="row mt-5" v-if="submittedCards.length">
     <div class="d-flex flex-wrap justify-content-start">
       <div
         v-for="(card, index) in submittedCards"
@@ -123,5 +196,34 @@ const submitForm = () => {
         </ul>
       </div>
     </div>
+  </div> -->
+  <!-- 用 DataTable 展示提交记录 -->
+  <div class="mt-5" v-if="submittedCards.length">
+    <DataTable
+      :value="submittedCards"
+      responsiveLayout="scroll"
+      class="p-datatable-sm"
+    >
+      <Column field="username" header="Username" />
+
+      <!-- 密码：如需明文就保留 field；如需掩码可用 #body 槽（见下列注释） -->
+      <Column field="password" header="Password" />
+      <!-- 若想掩码显示，改成：
+      <Column header="Password">
+        <template #body="{ data }">
+          {{ '•'.repeat(String(data.password || '').length) }}
+        </template>
+      </Column>
+      -->
+
+      <Column header="Australian Resident">
+        <template #body="{ data }">
+          {{ data.isAustralian ? "Yes" : "No" }}
+        </template>
+      </Column>
+
+      <Column field="gender" header="Gender" />
+      <Column field="reason" header="Reason" />
+    </DataTable>
   </div>
 </template>
