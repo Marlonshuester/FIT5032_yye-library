@@ -1,84 +1,106 @@
 <script setup>
-import { ref } from "vue";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
+import { ref } from 'vue'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
 
 const formData = ref({
-  username: "",
-  password: "",
+  username: '',
+  password: '',
+  confirmPassword: '',
   isAustralian: false,
-  reason: "",
-  gender: "",
-});
+  reason: '',
+  gender: '',
+  suburb: 'Clayton',
+})
 
-const submittedCards = ref([]);
+const submittedCards = ref([])
+const reasonMessages = ref([])
 
 const submitForm = () => {
-  validateName(true);
-  validatePassword(true);
-  if (!errors.value.username && !errors.value.password) {
-    submittedCards.value.push({ ...formData.value });
+  validateName(true)
+  validatePassword(true)
+  if (!errors.value.username && !errors.value.password && !errors.value.confirmPassword) {
+    submittedCards.value.push({ ...formData.value })
     // console.log("submittedCards length: ", submittedCards.value.length);
-    clearForm();
+    clearForm()
   }
-};
+}
 
 const clearForm = () => {
   formData.value = {
-    username: "",
-    password: "",
+    username: '',
+    password: '',
+    confirmPassword: '',
     isAustralian: false,
-    reason: "",
-    gender: "",
-  };
-};
+    reason: '',
+    gender: '',
+    suburb: '',
+  }
+}
 
 const errors = ref({
   username: null,
   password: null,
+  confirmPassword: null,
   isAustralian: null,
   reason: null,
   gender: null,
-});
+  suburb: null,
+})
 
 const validateName = (blur) => {
   if (formData.value.username.length < 3) {
-    if (blur) errors.value.username = "Name must be at least 3 characters";
+    if (blur) errors.value.username = 'Name must be at least 3 characters'
   } else {
-    errors.value.username = null;
+    errors.value.username = null
   }
-};
+}
 
 const validatePassword = (blur) => {
-  const password = formData.value.password;
-  const minLength = 8;
-  const hasUppercase = /[A-Z]/.test(password);
-  const hasLowercase = /[a-z]/.test(password);
-  const hasNumber = /\d/.test(password);
-  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>"]/.test(password);
+  const password = formData.value.password
+  const minLength = 8
+  const hasUppercase = /[A-Z]/.test(password)
+  const hasLowercase = /[a-z]/.test(password)
+  const hasNumber = /\d/.test(password)
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>"]/.test(password)
 
   if (password.length < minLength) {
-    if (blur)
-      errors.value.password = `Password must be at least ${minLength} characters long.`;
+    if (blur) errors.value.password = `Password must be at least ${minLength} characters long.`
   } else if (!hasUppercase) {
-    if (blur)
-      errors.value.password =
-        "Password must contain at least one uppercase letter.";
+    if (blur) errors.value.password = 'Password must contain at least one uppercase letter.'
   } else if (!hasLowercase) {
-    if (blur)
-      errors.value.password =
-        "Password must contain at least one lowercase letter.";
+    if (blur) errors.value.password = 'Password must contain at least one lowercase letter.'
   } else if (!hasNumber) {
-    if (blur)
-      errors.value.password = "Password must contain at least one number.";
+    if (blur) errors.value.password = 'Password must contain at least one number.'
   } else if (!hasSpecialChar) {
-    if (blur)
-      errors.value.password =
-        "Password must contain at least one speical character.";
+    if (blur) errors.value.password = 'Password must contain at least one speical character.'
   } else {
-    errors.value.password = null;
+    errors.value.password = null
   }
-};
+}
+
+/**
+ * Confirm password validation function that checks if the password and confirm password fields match.
+ * @param blur: boolean - If true, the function will display an error message if the passwords do not match.
+ */
+const validateConfirmPassword = (blur) => {
+  if (formData.value.password !== formData.value.confirmPassword) {
+    if (blur) errors.value.confirmPassword = 'Passwords do not match.'
+  } else {
+    errors.value.confirmPassword = null
+  }
+}
+
+const validateReason = () => {
+  reasonMessages.value = []
+
+  if (formData.value.reason.toLowerCase().includes('friend')) {
+    reasonMessages.value.push({
+      text: 'Great to have a friend',
+      color: 'green',
+    })
+  }
+}
 </script>
 
 <style scoped>
@@ -105,7 +127,7 @@ const validatePassword = (blur) => {
         <h1 class="text-center">User Information Form</h1>
         <form @submit.prevent="submitForm">
           <div class="row mb-3">
-            <div class="col-md-6">
+            <div class="col-md-6 col-sm-6">
               <label for="username" class="form-label">Username</label>
               <input
                 type="text"
@@ -119,7 +141,15 @@ const validatePassword = (blur) => {
                 {{ errors.username }}
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 col-sm-6">
+              <label for="gender" class="form-label">Gender</label>
+              <select class="form-select" id="gender" v-model="formData.gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="col-md-6 col-sm-6">
               <label for="password" class="form-label">Password</label>
               <input
                 type="password"
@@ -129,13 +159,26 @@ const validatePassword = (blur) => {
                 @input="() => validatePassword(false)"
                 v-model="formData.password"
               />
+              <div v-if="errors.confirmPassword" class="text-danger">
+                {{ errors.confirmPassword }}
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+              <label for="confirm-password" class="form-label">Confirm password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="confirm-password"
+                v-model="formData.confirmPassword"
+                @blur="() => validateConfirmPassword(true)"
+              />
               <div v-if="errors.password" class="text-danger">
                 {{ errors.password }}
               </div>
             </div>
           </div>
           <div class="row mb-3">
-            <div class="col-md-6">
+            <div class="col-md-6 col-sm-6">
               <div class="form-check">
                 <input
                   type="checkbox"
@@ -143,18 +186,8 @@ const validatePassword = (blur) => {
                   id="isAustralian"
                   v-model="formData.isAustralian"
                 />
-                <label class="form-check-label" for="isAustralian"
-                  >Australian Resident?</label
-                >
+                <label class="form-check-label" for="isAustralian">Australian Resident?</label>
               </div>
-            </div>
-            <div class="col-md-6">
-              <label for="gender" class="form-label">Gender</label>
-              <select class="form-select" id="gender" v-model="formData.gender">
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
             </div>
           </div>
           <div class="mb-3">
@@ -164,13 +197,19 @@ const validatePassword = (blur) => {
               id="reason"
               rows="3"
               v-model="formData.reason"
+              @input="validateReason"
             ></textarea>
+            <p v-for="(msg, index) in reasonMessages" :key="index" :style="{ color: msg.color }">
+              {{ msg.text }}
+            </p>
+          </div>
+          <div class="mb-3">
+            <label for="reason" class="form-label">Suburb</label>
+            <input type="text" class="form-control" id="suburb" v-bind:value="formData.suburb" />
           </div>
           <div class="text-center">
             <button type="submit" class="btn btn-primary me-2">Submit</button>
-            <button type="button" class="btn btn-secondary" @click="clearForm">
-              Clear
-            </button>
+            <button type="button" class="btn btn-secondary" @click="clearForm">Clear</button>
           </div>
         </form>
       </div>
@@ -198,7 +237,9 @@ const validatePassword = (blur) => {
     </div>
   </div> -->
   <!-- 用 DataTable 展示提交记录 -->
-  <div class="mt-5" v-if="submittedCards.length">
+  <div class="row-mt-5">
+    <!-- v-if="submittedCards.length" -->
+    <h4>Primevue Datatable.</h4>
     <DataTable
       :value="submittedCards"
       :dataKey="'_id'"
@@ -217,36 +258,21 @@ const validatePassword = (blur) => {
         </div>
       </template>
 
-      <Column
-        field="username"
-        header="Username"
-        sortable
-        style="min-width: 140px"
-      />
+      <Column field="username" header="Username" sortable style="min-width: 140px" />
 
       <Column header="Password" style="min-width: 120px">
         <template #body="{ data }">
-          {{ "•".repeat((data.password || "").length) }}
+          {{ '•'.repeat((data.password || '').length) }}
         </template>
       </Column>
 
-      <Column
-        field="isAustralian"
-        header="Resident"
-        sortable
-        style="min-width: 120px"
-      >
+      <Column field="isAustralian" header="Resident" sortable style="min-width: 120px">
         <template #body="{ data }">
-          {{ data.isAustralian ? "Yes" : "No" }}
+          {{ data.isAustralian ? 'Yes' : 'No' }}
         </template>
       </Column>
 
-      <Column
-        field="gender"
-        header="Gender"
-        sortable
-        style="min-width: 100px"
-      />
+      <Column field="gender" header="Gender" sortable style="min-width: 100px" />
 
       <Column field="reason" header="Reason" style="min-width: 220px">
         <template #body="{ data }">

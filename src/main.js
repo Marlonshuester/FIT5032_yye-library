@@ -6,14 +6,17 @@ import App from "./App.vue";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Primevue from "primevue/config";
-import Aura from "@primevue/themes/aura";
+import Aura from "@primeuix/themes/aura";
 import { Theme } from "@primevue/themes";
+import router from "./router";
 
 const app = createApp(App);
-app.use(Primevue, {
-  theme: {
-    preset: Aura,
-  },
-});
+app
+  .use(Primevue, {
+    theme: {
+      preset: Aura,
+    },
+  })
+  .use(router);
 // createApp(App).mount("#app");
 app.mount("#app");
