@@ -47,12 +47,23 @@ function onLogout() {
             <router-link class="nav-link" to="/">Home</router-link>
           </li>
 
+          <li>
+            <router-link to="/FireLogin" class="nav-link" active-class="active"
+              >Firebase Login</router-link
+            >
+          </li>
+          <li>
+            <router-link to="/FireRegister" class="nav-link" active-class="active"
+              >Firebase Register</router-link
+            >
+          </li>
+
           <!-- /about -->
           <li class="nav-item" v-if="isAuthenticated">
             <router-link class="nav-link" to="/about">About</router-link>
           </li>
           <li class="nav-item" v-else>
-            <a class="nav-link disabled" aria-disabled="true" title="Login required">About 🔒</a>
+            <a class="nav-link disabled" aria-disabled="true" title="Login required">About</a>
           </li>
         </ul>
 

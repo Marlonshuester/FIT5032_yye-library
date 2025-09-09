@@ -1,22 +1,25 @@
+// index.js
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
-import LoginView from '../views/LoginView.vue' // NEW
-import AccessDeniedView from '../views/AccessDeniedView.vue' // NEW
-import { useAuth } from '../stores/auth' // NEW
+import LoginView from '@/views/LoginView.vue' // NEW
+import AccessDeniedView from '@/views/AccessDeniedView.vue' // NEW
+import { useAuth } from '@/stores/auth' // NEW
+import FirebaseSigninView from '@/views/FirebaseSigninView.vue'
+import FirebaseRegisterView from '@/views/FirebaseRegisterView.vue'
 
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: HomeView,
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: AboutView,
-  },
-]
+// const routes = [
+//   {
+//     path: '/',
+//     name: 'Home',
+//     component: HomeView,
+//   },
+//   {
+//     path: '/about',
+//     name: 'About',
+//     component: AboutView,
+//   },
+// ]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,7 +33,9 @@ const router = createRouter({
     },
     { path: '/login', name: 'login', component: LoginView },
     { path: '/denied', name: 'denied', component: AccessDeniedView },
-    { path: '/:pathMatch(.*)*', redirect: '/' },
+    { path: '/FireRegister', name: 'FireRegister', component: FirebaseRegisterView },
+    { path: '/FireLogin', name: 'FireLogin', component: FirebaseSigninView },
+    // { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
 })
 
