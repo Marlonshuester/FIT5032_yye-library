@@ -1,7 +1,20 @@
-<template>
-  <!-- Using Bootstrap's Header template (starter code) -->
-  <!-- https://getbootstrap.com/docs/5.0/examples/headers/ -->
-  <div class="container">
+<script setup>
+import { useRouter } from 'vue-router'
+import { useAuth } from '@/stores/auth'
+
+const router = useRouter()
+const { isAuthenticated, logout } = useAuth()
+
+function onLogout() {
+  logout()
+  router.push('/login')
+}
+</script>
+
+<!-- <template> -->
+<!-- Using Bootstrap's Header template (starter code) -->
+<!-- https://getbootstrap.com/docs/5.0/examples/headers/ -->
+<!-- <div class="container">
     <header class="d-flex justify-content-center py-3">
       <ul class="nav nav-pills">
         <li class="nav-item">
@@ -20,7 +33,38 @@
         </li>
       </ul>
     </header>
-  </div>
+  </div> -->
+<!-- </template> -->
+
+<template>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary mb-3">
+    <div class="container">
+      <router-link class="navbar-brand" to="/">LibraryApp</router-link>
+
+      <div class="collapse navbar-collapse show">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <router-link class="nav-link" to="/">Home</router-link>
+          </li>
+
+          <!-- /about -->
+          <li class="nav-item" v-if="isAuthenticated">
+            <router-link class="nav-link" to="/about">About</router-link>
+          </li>
+          <li class="nav-item" v-else>
+            <a class="nav-link disabled" aria-disabled="true" title="Login required">About 🔒</a>
+          </li>
+        </ul>
+
+        <div class="d-flex gap-2">
+          <router-link v-if="!isAuthenticated" class="btn btn-outline-primary" to="/login">
+            Login
+          </router-link>
+          <button v-else class="btn btn-outline-danger" @click="onLogout">Logout</button>
+        </div>
+      </div>
+    </div>
+  </nav>
 </template>
 
 <style scoped>
