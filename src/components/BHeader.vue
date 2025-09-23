@@ -65,6 +65,9 @@ function onLogout() {
           <li class="nav-item" v-else>
             <a class="nav-link disabled" aria-disabled="true" title="Login required">About</a>
           </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/addBook">Add Book</router-link>
+          </li>
         </ul>
 
         <div class="d-flex gap-2">
