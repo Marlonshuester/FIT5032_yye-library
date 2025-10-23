@@ -8,6 +8,10 @@ import { useAuth } from '@/stores/auth' // NEW
 import FirebaseSigninView from '@/views/FirebaseSigninView.vue'
 import FirebaseRegisterView from '@/views/FirebaseRegisterView.vue'
 import AddBookView from '@/views/AddBookView.vue'
+import GetBookCountView from '@/views/GetBookCountView.vue'
+import WeatherView from '@/views/WeatherView.vue'
+import CountBookAPI from '@/views/CountBookAPI.vue'
+import GetAllBooksAPI from '@/views/GetAllBooksAPI.vue'
 
 // const routes = [
 //   {
@@ -23,7 +27,7 @@ import AddBookView from '@/views/AddBookView.vue'
 // ]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(process.BASE_URL),
   routes: [
     { path: '/', name: 'home', component: HomeView },
     {
@@ -37,6 +41,10 @@ const router = createRouter({
     { path: '/FireRegister', name: 'FireRegister', component: FirebaseRegisterView },
     { path: '/FireLogin', name: 'FireLogin', component: FirebaseSigninView },
     { path: '/addBook', name: 'addBook', component: AddBookView },
+    { path: '/getBookCount', name: 'getBookCount', component: GetBookCountView },
+    { path: '/WeatherCheck', name: 'WeatherCheck', component: WeatherView },
+    { path: '/CountBookAPI', name: 'CountBookAPI', component: CountBookAPI },
+    { path: '/GetAllBooksAPI', name: 'GetAllBooksAPI', component: GetAllBooksAPI },
     // { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
 })
