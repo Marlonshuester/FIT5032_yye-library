@@ -1,36 +1,20 @@
 <!-- App.vue -->
-<script>
+<script setup>
 import JSONLab from './components/JSONLab.vue'
 import BHeader from './components/BHeader.vue'
 import LibForm from './components/LibForm.vue'
-import CountBookAPI from './views/CountBookAPI.vue'
-
-export default {
-  name: 'App',
-  components: {
-    BHeader,
-    CountBookAPI,
-  },
-  computed: {
-    showHeader() {
-      return this.$route.path !== '/count-book-api'
-    },
-  },
-}
 </script>
 
 <template>
-  <div class="main-container">
-    <header>
-      <BHeader v-if="showHeader" />
-    </header>
+  <header>
+    <BHeader />
+  </header>
 
-    <main class="main-box">
-      <!-- <LibForm /> -->
-      <!-- <JSONLab /> -->
-      <router-view></router-view>
-    </main>
-  </div>
+  <main class="main-box">
+    <!-- <LibForm /> -->
+    <!-- <JSONLab /> -->
+    <router-view></router-view>
+  </main>
 </template>
 
 <style scoped>

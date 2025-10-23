@@ -68,26 +68,6 @@ function onLogout() {
           <li class="nav-item">
             <router-link class="nav-link" to="/addBook">Add Book</router-link>
           </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/getBookCount" active-class="active"
-              >Get Book Count</router-link
-            >
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/WeatherCheck" active-class="active"
-              >Get Weather</router-link
-            >
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/CountBookAPI" active-class="active"
-              >Count Book API</router-link
-            >
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/GetAllBooksAPI" active-class="active"
-              >All Books API</router-link
-            >
-          </li>
         </ul>
 
         <div class="d-flex gap-2">
